@@ -17,24 +17,23 @@ For both expression data, row represents gene, column represents sample, e.g.,
  Gene 2 |    #     |    #     |    #     
  Gene 3 |    #     |    #     |    #     
 
-## Input file format: .txt
+* Input file format: *.txt
+* The output file: *.csv
 
-* The output file:
-** The first column and third column represent the nodes with differential edges, the second column stands for the differential edges detected under which condition
-Output file will be saved as .csv format
+The first column and third column represent the nodes with differential edges, the second column stands for the differential edges detected under which condition
+Output file will be saved as *.csv format
 
-Differential network will be plotted in color-coded graph
+* Differential network will be plotted in color-coded graph
 
 ## Code File:
 
-General file: DDN 2.1 package example 
-
-Main function: DDN.py
+* General file: DDN 2.1 package example
+* Main function: DDN.py
 
 Please use Jupyter Notebook to open the .ipynb file
 
 ## Demo
 
-Simulated data by SynTreN
+* Simulated data by SynTreN
 
-Demo please see  DDN 2.1 package example.ipynb
+For demo, please see DDN 2.1 package example.ipynb
