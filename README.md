@@ -3,7 +3,7 @@
 DDN 2.1 Manual
 
 ## DDN Data
-* Data Format
+* Data Format:
 	* Input file format: *.txt
 	* The output file: *.csv
 
