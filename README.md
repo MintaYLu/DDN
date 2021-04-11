@@ -5,10 +5,10 @@ DDN 2.1 Manual
 
 ## Data Format
 
-The input file:
-* Gene name: filename_genename.txt
-* Expression data in condition 1 (case): filename_case.txt
-* Expression data in condition 2 (control) : filename_control.txt
+* The input file:
+	* Gene name: filename_genename.txt
+	* Expression data in condition 1 (case): filename_case.txt
+	* Expression data in condition 2 (control) : filename_control.txt
 
 For both expression data,
 
