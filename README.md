@@ -3,9 +3,7 @@ Differential Dependency Network
 
 DDN 2.1 Manual
 
-Thank you for using DDN package!
-
-Data Format
+## Data Format
 
 The input file:
 * Gene name: filename_genename.txt
@@ -25,7 +23,7 @@ Gene 2
 
 Gene 3			
 
-Input file format: .txt
+## Input file format: .txt
 
 * The output file:
 ** The first column and third column represent the nodes with differential edges, the second column stands for the differential edges detected under which condition
@@ -33,7 +31,7 @@ Output file will be saved as .csv format
 
 Differential network will be plotted in color-coded graph
 
-Code File:
+## Code File:
 
 General file: DDN 2.1 package example 
 
@@ -41,7 +39,7 @@ Main function: DDN.py
 
 Please use Jupyter Notebook to open the .ipynb file
 
-Demo
+## Demo
 
 Simulated data by SynTreN
 
