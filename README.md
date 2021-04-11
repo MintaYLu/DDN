@@ -11,10 +11,10 @@ DDN 2.1 Manual
 	* Expression data in condition 2 (control) : filename_control.txt
 
 For both expression data, row represents gene, column represents sample, e.g., 
-|        | Sample 1 | Sample 2 | Sample 3 |
-| Gene 1 |          |          |          |
-| Gene 2 |          |          |          |
-| Gene 3 |          |          |          |
+        | Sample 1 | Sample 2 | Sample 3 
+ Gene 1 |          |          |          
+ Gene 2 |          |          |          
+ Gene 3 |          |          |          
 
 ## Input file format: .txt
 
