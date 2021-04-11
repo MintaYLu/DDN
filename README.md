@@ -11,7 +11,7 @@ DDN 2.1 Manual
 	* General file: DDN 2.1 package example
 	* Main function: DDN.py
 
-Please use Jupyter Notebook to open the .ipynb file
+Please use Jupyter Notebook to open the *.ipynb file
 
 * Input file:
 	* Gene name: filename_genename.txt
