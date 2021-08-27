@@ -28,7 +28,7 @@ For both expression data, row represents gene, column represents sample, e.g.,
 * Output file:
 	* Differential edges: filename_diffedges.csv
 
-The first and second column represent the two nodes of differential edge, the third column stands for the differential edge detected under which condition, the fourth column shows the strength of the differential edge, which is the nontrival linear regression coefficient between the two nodes.
+The first and second column represent the two nodes of differential edge, the third column stands for the differential edge detected under which condition, the fourth column shows the strength of the differential edge, which is the nontrivial linear regression coefficient between the two nodes.
 
 * Graphic output:
 	* Differential network: will be plotted in color-coded graph
