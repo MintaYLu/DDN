@@ -241,7 +241,7 @@ class DDN:
         
         fig, ax = plt.subplots(figsize=(6, 6))
         nx.draw(G, pos=pos, node_color='lightblue', node_size=node_size, \
-                edges=edges, edge_color=edge_color, width=3.5, \
+                edgelist=edges, edge_color=edge_color, width=3.5, \
                 with_labels=True, font_size=16, font_weight='bold', font_color='magenta')
         
         ax.set_xlim((-1.2, +1.2))
