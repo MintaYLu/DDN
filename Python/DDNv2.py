@@ -189,6 +189,8 @@ class DDN:
         
         # start calculations
         diffedges = {}
+        common_edges = []
+        
         for gene in tqdm(range(p)):
             # choose one gene as target
             y = self.concatenateGeneData(control_data[:, gene], case_data[:, gene], method='row')
@@ -212,6 +214,12 @@ class DDN:
             weight1 = [beta1[i] for i in range(p) if beta1[i] != 0 and beta2[i] == 0]
             weight2 = [beta2[i] for i in range(p) if beta2[i] != 0 and beta1[i] == 0]
             
+            # Track common edges
+            for i in range(p):
+                if beta1[i] != 0 and beta2[i] != 0:
+                    edge = (min(genename[gene], genename[i]), max(genename[gene], genename[i]), 'common')
+                    common_edges.append(edge)
+            
             # update results
             for neighbors, weights, condition in zip([condition1, condition2], [weight1, weight2], ['condition1', 'condition2']):
                 for neighbor, weight in zip(neighbors, weights):
@@ -221,7 +229,7 @@ class DDN:
         
         diffedges = sorted([k + tuple([v]) for k, v in diffedges.items()])
         
-        return diffedges
+        return diffedges, common_edges
     
     def plotDifferentialNetwork(self, diffedges, maxalpha=1.0, minalpha=0.2):
         G = nx.Graph()
@@ -264,57 +272,7 @@ class DDN:
                     file.write(f"{gene},{neighbor},{condition},{weight}\r")
     
     
-    def generateDifferentialNetwork(self, case_data, control_data, genename, lambda1=0.30, lambda2=0.10, threshold=1e-6):
-        # feature size (gene size)
-        p = control_data.shape[1]
-        
-        # sample size
-        n1 = control_data.shape[0]
-        n2 = case_data.shape[0]
-        
-        # start calculations
-        diffedges = {}
-        common_edges = []
-        
-        for gene in tqdm(range(p)):
-            # choose one gene as target
-            y = self.concatenateGeneData(control_data[:, gene], case_data[:, gene], method='row')
-            
-            # choose other genes as feature
-            idx = [i for i in range(p) if i != gene]
-            X = self.concatenateGeneData(control_data[:, idx], case_data[:, idx], method='diag')
-            
-            # perform bcd algorithm
-            beta = self.bcd(y, X, lambda1, lambda2, n1, n2, threshold)
-            
-            # reindex the features
-            beta1 = list(beta[0 : gene]) + [0] + list(beta[gene : p - 1])
-            beta1 = np.array(beta1)
-            beta2 = list(beta[p - 1 : gene + p - 1]) + [0] + list(beta[gene + p - 1 : 2 * p - 2])
-            beta2 = np.array(beta2)
-            
-            # construct neighbours under two conditions
-            condition1 = [genename[i] for i in range(p) if beta1[i] != 0 and beta2[i] == 0]
-            condition2 = [genename[i] for i in range(p) if beta2[i] != 0 and beta1[i] == 0]
-            weight1 = [beta1[i] for i in range(p) if beta1[i] != 0 and beta2[i] == 0]
-            weight2 = [beta2[i] for i in range(p) if beta2[i] != 0 and beta1[i] == 0]
-            
-            # Track common edges
-            for i in range(p):
-                if beta1[i] != 0 and beta2[i] != 0:
-                    edge = (min(genename[gene], genename[i]), max(genename[gene], genename[i]), 'common')
-                    common_edges.append(edge)
-            
-            # update results
-            for neighbors, weights, condition in zip([condition1, condition2], [weight1, weight2], ['condition1', 'condition2']):
-                for neighbor, weight in zip(neighbors, weights):
-                    tuple_diffedge = (min(genename[gene], neighbor), max(genename[gene], neighbor), condition)
-                    diffedges.setdefault(tuple_diffedge, 0.0)
-                    diffedges[tuple_diffedge] += weight
-        
-        diffedges = sorted([k + tuple([v]) for k, v in diffedges.items()])
-        
-        return diffedges, common_edges
+
 
     def plotCommonNetwork(self, common_edges):
         G = nx.Graph()
