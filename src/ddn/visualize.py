@@ -71,7 +71,7 @@ def _add_node_to_a_circle(pos, nodes, cen, rad, angles):
 
 
 def _angles_in_ellipse(num, a, b):
-    # Based on https://stackoverflow.com/a/52062369, 
+    # Based on https://stackoverflow.com/a/52062369,
     # which is from https://pypi.org/project/flyingcircus/
     assert num > 0
     assert a < b
@@ -180,7 +180,7 @@ def _plot_network_helper(
     # print("s_min ", s_min)
     s_min = min(s_min, 500)
     node_size = np.array([d for n, d in G.degree()])
-    node_size = node_size / (np.max(node_size)+1)
+    node_size = node_size / (np.max(node_size) + 1)
 
     node_size = node_size * s_min * node_size_scale * 10
     font_size = d_min * font_size_scale * 100

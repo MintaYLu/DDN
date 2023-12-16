@@ -13,7 +13,7 @@ def standardizeGeneData(genedata, scaler="std", zero_mean=False):
             # standard deviation
             s = np.std(genedata[:, i])
         elif scaler == "rms":
-            # root mean square
+            # root-mean-square
             s = np.sqrt(np.mean(np.square(genedata[:, i])))
         else:
             s = 1

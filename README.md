@@ -25,6 +25,7 @@ $ pip install -e ./
 
 This toy example generates two random datasets, and use estimate to estimate two networks, one for each dataset.
 ```python
+import numpy as np
 from ddn import ddn
 dat1 = np.random.randn(1000, 10)
 dat2 = np.random.randn(1000, 10)

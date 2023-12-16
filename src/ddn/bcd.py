@@ -1,3 +1,14 @@
+"""Block coordinate descent for DDN
+
+This module implements the original block coordinate descent in [1], as well as various accelerated versions.
+Most methods are also Numba accelerated, except for `bcd_org_old`, which is left for comparison purposes.
+
+For data with lots of samples, consider using `bcd_corr`.
+For data with lots of features, the `bcd_residual` is faster.
+
+[1] Zhang, Bai, and Yue Wang. "Learning structural changes of Gaussian graphical models in controlled experiments." UAI (2010).
+"""
+
 import numpy as np
 import numba
 
@@ -5,6 +16,44 @@ import numba
 def bcd_org_old(
     beta_in, y, X, lambda1, lambda2, n1=1, n2=1, threshold=1e-6, max_iter=100000
 ):
+    """The BCD algorithm in DDN 2.0.
+
+    See https://arxiv.org/abs/1203.3532 for details
+    Denote P be the number features. N1 be the sample size for condition 1, and N2 for condition 2.
+
+    Parameters
+    ----------
+    beta_in : array_like, length 2P
+        Initial beta. If initialization is not needed, use an array of all zeros
+    y : array_like, size (N1+N2) by 1
+        The samples for the node serving as response.
+    X : array_like, size (N1+N2) by (P-2)
+        The block diagonal matrix with all the predictive nodes. Each condition has P-1 nodes.
+        The top left block has size N1(P-1), while the bottom right block has size N2(P-1).
+        Other elements are all zeros.
+    lambda1 : float
+        DDN parameter lambda1.
+    lambda2 : float
+        DDN parameter lambda2.
+    n1 : int
+        Sample size for condition 1, N1
+    n2 : int
+        Sample size for condition 2, N2
+    threshold : float
+        Convergence threshold.
+    max_iter : int
+        Maximum number of iterations
+
+    Returns
+    -------
+    beta : ndarray, shape 2P
+        Estimated beta for two conditions on node CurrIdx
+    r : int
+        Number of iterations taken
+    betaerr : float
+        The error term
+
+    """
     # total feature size must be even
     if X.shape[1] == 0 or X.shape[1] % 2 == 1:
         return []
@@ -37,15 +86,8 @@ def bcd_org_old(
                 x2 = X[:, k + p]
                 r = r + 1
 
-                # beta_temp = np.copy(beta)
-                # beta_temp[k] = 0
-                # beta_temp[k + p] = 0
-                # y_residual0 = y - np.dot(X, beta_temp)
-
                 idx = [i for i in range(2 * p) if i not in (k, k + p)]
                 y_residual = y - np.dot(X[:, idx], beta[idx])
-
-                # print(np.sum(np.abs(y_residual - y_residual0)))
 
                 rho1 = np.sum(y_residual * x1) / n1
                 rho2 = np.sum(y_residual * x2) / n2
@@ -66,7 +108,47 @@ def bcd_org_old(
 
 
 @numba.njit
-def bcd_org(beta_in, y, X, lambda1, lambda2, n1=1, n2=1, threshold=1e-6, max_iter=100000):
+def bcd_org(
+    beta_in, y, X, lambda1, lambda2, n1=1, n2=1, threshold=1e-6, max_iter=100000
+):
+    """The BCD algorithm in DDN 2.0, with Numba acceleration and some simplification.
+
+    See https://arxiv.org/abs/1203.3532 for details
+    Denote P be the number features. N1 be the sample size for condition 1, and N2 for condition 2.
+
+    Parameters
+    ----------
+    beta_in : array_like, length 2P
+        Initial beta. If initialization is not needed, use an array of all zeros
+    y : array_like, size (N1+N2) by 1
+        The samples for the node serving as response.
+    X : array_like, size (N1+N2) by (P-2)
+        The block diagonal matrix with all the predictive nodes. Each condition has P-1 nodes.
+        The top left block has size N1(P-1), while the bottom right block has size N2(P-1).
+        Other elements are all zeros.
+    lambda1 : float
+        DDN parameter lambda1.
+    lambda2 : float
+        DDN parameter lambda2.
+    n1 : int
+        Sample size for condition 1, N1
+    n2 : int
+        Sample size for condition 2, N2
+    threshold : float
+        Convergence threshold.
+    max_iter : int
+        Maximum number of iterations
+
+    Returns
+    -------
+    beta : ndarray, shape 2P
+        Estimated beta for two conditions on node CurrIdx
+    r : int
+        Number of iterations taken
+    betaerr : float
+        The error term
+
+    """
     # feature size (gene size) for each group
     # x1 (control): feature 0 to p-1
     # x2 (case): feature p to 2*p-1
@@ -116,6 +198,45 @@ def bcd_residual(
     threshold,
     max_iter=10000,
 ):
+    """BCD algorithm for DDN using residual update strategy
+
+    The algorithm allows warm start, which requires initial `beta_in`, `y1_resi`, and `y2_resi`.
+    See `run_resi` on how to prepare these inputs.
+    Denote P be the number features. N1 be the sample size for condition 1, and N2 for condition 2.
+
+    Parameters
+    ----------
+    beta_in : array_like, length 2P
+        Initial beta. If initialization is not needed, use an array of all zeros
+    X1 : array_like, shape N1 by P
+        The data from condition 1
+    X2 : array_like, shape N2 by P
+        The data from condition 2
+    y1_resi : array_like, shape N1 by 1
+        The initial residual signal for condition 1. If warm start is not used, it is column CurrIdx of X1.
+    y2_resi : array_like, shape N2 by 1
+        The initial residual signal for condition 2. If warm start is not used, it is column CurrIdx of X2.
+    CurrIdx : int
+        Index of the current node that serve as the response variable.
+    lambda1 : float
+        DDN parameter lambda1.
+    lambda2 : float
+        DDN parameter lambda2.
+    threshold : float
+        Convergence threshold.
+    max_iter : int
+        Maximum number of iterations
+
+    Returns
+    -------
+    beta : ndarray, shape 2P
+        Estimated beta for two conditions on node CurrIdx
+    r : int
+        Number of iterations taken
+    betaerr : float
+        The error term
+
+    """
     p = X1.shape[1]
     n1 = X1.shape[0]
     n2 = X2.shape[0]
@@ -126,23 +247,12 @@ def bcd_residual(
 
     betaerr_array = np.zeros(2 * p)
     beta = np.zeros(2 * p)
-    # betaerr = 100.0
 
     r = 0
     k_last = CurrIdx
     while True:
         beta1_old = np.copy(beta1)
         beta2_old = np.copy(beta2)
-
-        # if 1:
-        #     if r > 0:
-        #         b_norm_old = np.sum(np.abs(beta1_old)) + np.sum(np.abs(beta2_old))
-        #         err1 = beta1 - beta1_old
-        #         err2 = beta2 - beta2_old
-        #         b_norm_dif = np.sum(np.abs(err1)) + np.sum(np.abs(err2))
-        #         betaerr = b_norm_dif / b_norm_old
-        #         if (betaerr < threshold) or (r > max_iter):
-        #             break
 
         for i in range(p):
             if i == CurrIdx:
@@ -187,10 +297,46 @@ def bcd_corr(
     threshold=1e-6,
     max_iter=100000,
 ):
+    """BCD algorithm for DDN using correlation matrix update strategy
+
+    This approach is more suitable for larger sample sizes.
+    The algorithm allows warm start, which requires initial `beta_in`.
+    Denote P be the number features. N1 be the sample size for condition 1, and N2 for condition 2.
+
+    Parameters
+    ----------
+    beta_in : array_like, length 2P
+        Initial beta. If initialization is not needed, use an array of all zeros
+    cur_node : int
+        Index of the current node that serve as the response variable.
+    lambda1 : float
+        DDN parameter lambda1.
+    lambda2 : float
+        DDN parameter lambda2.
+    corr_matrix_1 : array_like, P by P
+        Correlation matrix for condition 1
+    corr_matrix_2 : array_like, P by P
+        Correlation matrix for condition 2
+    threshold : float
+        Convergence threshold.
+    max_iter : int
+        Maximum number of iterations
+
+    Returns
+    -------
+    beta : ndarray, shape 2P
+        Estimated beta for two conditions on node CurrIdx
+    r : int
+        Number of iterations taken
+    delta_beta : float
+        The error term
+
+    """
     p = int(len(beta_in) / 2)
     beta1 = np.copy(beta_in[:p])
     beta2 = np.copy(beta_in[p:])
     beta_dif = np.zeros(2 * p)
+    delta_beta = 0.0
 
     r = 0
     for _ in range(max_iter):
@@ -211,8 +357,6 @@ def bcd_corr(
 
             rho1 = np.sum(betaBar1 * corr_matrix_1[:, k])
             rho2 = np.sum(betaBar2 * corr_matrix_2[:, k])
-            # rho1 = betaBar1 @ corr_matrix_1[:, k]
-            # rho2 = betaBar2 @ corr_matrix_2[:, k]
 
             beta2d = solve2d(rho1, rho2, lambda1, lambda2)
             beta1[k] = beta2d[0]
@@ -236,6 +380,29 @@ def bcd_corr(
 
 @numba.njit
 def solve2d(rho1, rho2, lambda1, lambda2):
+    """Optimize for two variables corresponding to one node
+
+    The details can be found in https://arxiv.org/abs/1203.3532
+
+    Parameters
+    ----------
+    rho1 : float
+        The rho from data1
+    rho2 : float
+        The rho from data2
+    lambda1 : float
+        DDN parameter lambda1
+    lambda2 : float
+        DDN parameter lambda2
+
+    Returns
+    -------
+    beta1 : float
+        Optimal coefficient for data1
+    beta2 : float
+        Optimal coefficient for data2
+
+    """
     # initialize output
     area_index = 0
     beta1 = 0
