@@ -7,8 +7,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u"ddn"
-copyright = u"2023, Yizhi Wang"
-author = u"Yizhi Wang"
+copyright = u"2023, Minta Lu and Yizhi Wang"
+author = u"Minta Lu and Yizhi Wang"
 
 # -- General configuration ---------------------------------------------------
 
@@ -20,8 +20,25 @@ extensions = [
     "autoapi.extension",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    'sphinx.ext.mathjax',
 ]
 autoapi_dirs = ["../src"]
+
+myst_enable_extensions = [
+    "amsmath",
+    "attrs_inline",
+    "colon_fence",
+    "deflist",
+    "dollarmath",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "replacements",
+    "smartquotes",
+    "strikethrough",
+    "substitution",
+    "tasklist",
+]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -34,3 +51,6 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+
+nb_execution_mode = "off"
+nb_execution_timeout = 6000

@@ -1,6 +1,7 @@
 """The module for tuning hyperparameters in DDN
 
 Find strategies are implemented.
+
 - `cv_joint`: grid search CV for lambda1 and lambda2. This is time-consuming for larger data.
 - `cv_sequential`: CV for lambda1 first, then use the determined lambda1 to do CV on lambda2.
 - `cv_bai`:  CV for lambda1 first, then use the method in [1] to directly calculate lambda2.
@@ -244,8 +245,8 @@ def get_lambda2_bai(
         Estimated labmda2
 
     """
-    x1 = tools.standardizeGeneData(x1)
-    x2 = tools.standardizeGeneData(x2)
+    x1 = tools.standardize_data(x1)
+    x2 = tools.standardize_data(x2)
 
     n1 = x1.shape[0]
     n2 = x2.shape[0]
@@ -362,10 +363,12 @@ def calculate_regression(data, topo_est):
 
     For each variable, use all its neighbors as  predictors and find the regression coefficients.
 
-    # x = np.array([[-1,-1,1,1.0], [1,1,-1,-1]]).T
-    # y = np.array([1,1,-1,-1.0])
-    # out = np.linalg.lstsq(x, y, rcond=None)
-    # out[0]
+    This is an example of regression operation
+
+    >>> x = np.array([[-1,-1,1,1.0], [1,1,-1,-1]]).T
+    >>> y = np.array([1,1,-1,-1.0])
+    >>> out = np.linalg.lstsq(x, y, rcond=None)
+    >>> out[0]
 
     Parameters
     ----------
@@ -450,10 +453,10 @@ def cv_two_lambda(
         msk1[np.random.choice(n1, n1_train, replace=False)] = 1
         msk2 = np.zeros(n2)
         msk2[np.random.choice(n2, n2_train, replace=False)] = 1
-        g1_train = tools.standardizeGeneData(dat1[msk1 > 0])
-        g1_val = tools.standardizeGeneData(dat1[msk1 == 0])
-        g2_train = tools.standardizeGeneData(dat2[msk2 > 0])
-        g2_val = tools.standardizeGeneData(dat2[msk2 == 0])
+        g1_train = tools.standardize_data(dat1[msk1 > 0])
+        g1_val = tools.standardize_data(dat1[msk1 == 0])
+        g2_train = tools.standardize_data(dat2[msk2 > 0])
+        g2_val = tools.standardize_data(dat2[msk2 == 0])
 
         for i, lambda1 in enumerate(lambda1_lst):
             # print(n, i)

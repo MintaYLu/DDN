@@ -16,6 +16,26 @@ def create_pair_graph(
     corr=0.75,
     n_shuf=3,
 ):
+    """Generate precision matrix for pair graph.
+
+    For graph with N nodes, there are N/2 edges, and each node has degree one.
+
+    Parameters
+    ----------
+    n_node : int, optional
+        The number of nodes, by default 40
+    corr : float, optional
+        The value of precision matrix between two neighboring nodes, by default 0.75
+    n_shuf : int, optional
+        The number of edges to shuffle, by default 3
+
+    Returns
+    -------
+    g1_prec : ndarray
+        Precision matrix for condition 1, shape (N, N)
+    g2_prec : ndarray
+        Precision matrix for condition 2, shape (N, N)
+    """
     n_blk = int(n_node / 2)
     edge1 = np.zeros((n_blk, 2))
     edge1[:, 0] = np.arange(n_blk)
@@ -42,6 +62,26 @@ def create_pair_graph(
 
 
 def prep_sim_from_two_omega(omega1, omega2):
+    """Get covariance matrices and adjacency matrices from two precisions matrices
+
+    Parameters
+    ----------
+    omega1 : array_like
+        The precision matrix for condition 1
+    omega2 : array_like
+        The precision matrix for condition 2
+
+    Returns
+    -------
+    g1_cov : ndarray
+        Covariance matrix for condition 1
+    g2_cov : ndarray
+        Covariance matrix for condition 2
+    comm_gt : ndarray
+        Adjacency matrix of common network
+    diff_gt : ndarray
+        Adjacency matrix of differential network
+    """
     g1_cov, _ = create_cov_prec_mat(omega1)
     g2_cov, _ = create_cov_prec_mat(omega2)
     comm_gt, diff_gt = tools.get_common_diff_net_topo([omega1, omega2])
@@ -49,23 +89,54 @@ def prep_sim_from_two_omega(omega1, omega2):
 
 
 def gen_sample_two_conditions(g1_cov, g2_cov, n1, n2):
+    """Generate multivariante normal samples for two conditions
+
+    Let P be the number of features.
+
+    Parameters
+    ----------
+    g1_cov : array_like
+        Covariance matrix for condition 1
+    g2_cov : array_like
+        Covariance matrix for condition 2
+    n1 : int
+        Number of samples for condition 1
+    n2 : int
+        Number of samples for condition 2
+
+    Returns
+    -------
+    dat1 : ndarray
+        Generated samples for condition 1. Shape (n1, P)
+    dat2 : ndarray
+        Generated samples for condition 2. Shape (n2, P)
+    """
     dat1 = tools.gen_mv(g1_cov, n1)
     dat2 = tools.gen_mv(g2_cov, n2)
     return dat1, dat2
 
 
-def create_cov_prec_mat(prec_mat_temp):
-    """Create covariance and precision matrix from temporary precision matrix
+def create_cov_prec_mat(prec_mat_in):
+    """Create covariance from temporary precision matrix
+
+    Each variable now have unit variance. 
+    We also provide the corresponding precision matrix.
 
     We follow [Peng 2009] and do not use the d_ij term as the JGL paper.
 
-    Args:
-        prec_mat_temp (_type_): _description_
+    Parameters
+    ----------
+    prec_mat_in : ndarray
+        Input precision matrix
 
-    Returns:
-        _type_: _description_
+    Returns
+    -------
+    cov_mat : ndarray
+        Modified covariance matrix
+    prec_mat : ndarray
+        Corresponding precision matrix
     """
-    cov_mat_temp = np.linalg.inv(prec_mat_temp)
+    cov_mat_temp = np.linalg.inv(prec_mat_in)
     d_sqrt = np.sqrt(np.diag(1 / np.diagonal(cov_mat_temp)))
     cov_mat = d_sqrt @ cov_mat_temp @ d_sqrt
     prec_mat = np.linalg.inv(cov_mat)
@@ -74,6 +145,7 @@ def create_cov_prec_mat(prec_mat_temp):
 
 
 def simple_data():
+    """Generate example data for the tutorial"""
     n_node = 40
     n_sample1 = 100
     n_sample2 = 100

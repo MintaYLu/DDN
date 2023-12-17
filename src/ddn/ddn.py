@@ -6,10 +6,12 @@ For smaller data sets (e.g., less than 500 nodes), the serial version is fast en
 The two functions should have the same functionality.
 
 Each function allow using several different methods.
+
 - `org`: the method in DDN 2.0. This is slow for larger data sets.
 - `resi`: the method in DDN 3.0 using residual update strategy. This is suitable for larger feature number.
 - `corr`: the method in DDN 3.0 using correlation matrix update strategy. This is suitable for larger sample number.
 - `strongrule`: using the strong rule to accelerate the condition when lambda=0.
+
 We recommend using `resi` in general case. In case you have much more samples than features, consider `corr`.
 
 The choice of two hyperparameters lambda1 and lambda2 is critical.
@@ -78,8 +80,8 @@ def ddn_parallel(
     n_node = g1_data.shape[1]
     n1 = g1_data.shape[0]
     n2 = g2_data.shape[0]
-    g1_data = tools.standardizeGeneData(g1_data, scaler=std_est)
-    g2_data = tools.standardizeGeneData(g2_data, scaler=std_est)
+    g1_data = tools.standardize_data(g1_data, scaler=std_est)
+    g2_data = tools.standardize_data(g2_data, scaler=std_est)
 
     if len(g_rec_in) == 0:
         g_rec_in = np.zeros((2, n_node, n_node))
@@ -208,8 +210,8 @@ def ddn(
     n_node = g1_data.shape[1]
     n1 = g1_data.shape[0]
     n2 = g2_data.shape[0]
-    g1_data = tools.standardizeGeneData(g1_data, scaler=std_est)
-    g2_data = tools.standardizeGeneData(g2_data, scaler=std_est)
+    g1_data = tools.standardize_data(g1_data, scaler=std_est)
+    g2_data = tools.standardize_data(g2_data, scaler=std_est)
 
     if len(g_rec_in) == 0:
         g_rec_in = np.zeros((2, n_node, n_node))

@@ -62,9 +62,9 @@ def run_org(
     N_NODE = g1_data.shape[1]
     n1, n2 = g1_data.shape[0], g2_data.shape[0]
 
-    y = tools.concatenateGeneData(g1_data[:, node], g2_data[:, node], method="row")
+    y = tools.concatenate_data(g1_data[:, node], g2_data[:, node], method="row")
     node_fea = [i for i in range(N_NODE) if i != node]
-    X = tools.concatenateGeneData(
+    X = tools.concatenate_data(
         g1_data[:, node_fea], g2_data[:, node_fea], method="diag"
     )
     beta, r, betaerr = bcd.bcd_org(beta_in, y, X, lambda1, lambda2, n1, n2, threshold)
