@@ -2,7 +2,7 @@
 """
 
 import numpy as np
-from ddn import tools
+from ddn3 import tools
 
 
 def scan_error_measure(t1_lst, t2_lst, comm_gt, diff_gt):

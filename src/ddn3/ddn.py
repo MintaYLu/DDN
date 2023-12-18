@@ -27,7 +27,7 @@ However, we do not observe very significant speed up, and are not generally reco
 import numpy as np
 import joblib
 from joblib import Parallel, delayed
-from ddn import tools, solver
+from ddn3 import tools, solver
 
 
 def ddn_parallel(

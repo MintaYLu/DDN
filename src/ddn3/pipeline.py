@@ -1,8 +1,8 @@
 """The convenience wrappers for running DDN
 """
 
-from ddn import ddn, tools_export
-from ddn.simulation import simple_data
+from ddn3 import ddn, tools_export
+from ddn3.simulation import simple_data
 
 
 def ddn_pipeline(dat1, dat2, gene_names, lambda1=0.3, lambda2=0.1):

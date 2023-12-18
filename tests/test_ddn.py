@@ -1,5 +1,5 @@
 import numpy as np
-from ddn import ddn
+from ddn3 import ddn
 
 
 temp = np.load("./tests/two_part_network.npz")

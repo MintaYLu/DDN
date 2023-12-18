@@ -2,8 +2,8 @@
 """
 
 import numpy as np
-from ddn import tools
-from ddn import bcd, strong_rule
+from ddn3 import tools
+from ddn3 import bcd, strong_rule
 
 
 def run_org(

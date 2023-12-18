@@ -15,19 +15,26 @@ Python 3.12 may have some issue with Numba.
 
 DDN 3.0 can then be installed with the followin command.
 ```bash
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ddn
+pip install ddn3
 ```
-DDN 3.0 is still in development, so we put it into TestPyPI.
+<!-- ```bash
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ddn
+``` -->
 
 ### Option 2: install into an existing Conda environment
-If you want to install DDN into an existing Conda environment, it is suggested to to install dependencies in Conda first.
+If you want to install DDN into an existing Conda environment, it is suggested to install dependencies from Conda first.
 
 First we need to install some common dependencies.
 ```bash
 $ conda install -c conda-forge numpy scipy numba networkx matplotlib jupyter scipy pandas scikit-learn
 ```
 
-Clone the repository, or just download or unzip it. Then we can install DDN 3.0.
+Then run
+```bash
+pip install ddn3
+```
+
+Alternatively, you can clone the repository, or just download or unzip it. Then we can install DDN 3.0.
 ```bash
 $ pip install ./
 ```
