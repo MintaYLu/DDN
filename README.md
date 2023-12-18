@@ -6,17 +6,28 @@ DDN 3.0 is capable of jointly learning sparse common and rewired network structu
 This repository provides the Python package and examples of using DDN 3.0.
 
 ## Installation
-DDN 3.0 is still in development and is not in PyPI yet.
-It is recommended to install it inside a Conda environment.
+### Option 1: install into a new Conda environment
+One way is to install DDN into a new Conda environment. To create and activate an environment named `ddn`, run this:
+```bash
+conda create -n ddn
+conda activate ddn
+```
+
+DDN 3.0 can then be installed with the followin command.
+```bash
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ddn
+```
+DDN 3.0 is still in development, so we put it into TestPyPI.
+
+### Option 2: install into an existing Conda environment
+If you want to install DDN into an existing Conda environment, it is suggested to to install DDN in development mode
 
 First we need to install some common dependencies.
 ```bash
 $ conda install -c conda-forge numpy scipy numba networkx matplotlib jupyter scipy pandas scikit-learn
 ```
 
-Clone the repository, or just download or unzip it.
-
-Then we can install DDN 3.0 in developement mode.
+Clone the repository, or just download or unzip it. Then we can install DDN 3.0 in developement mode.
 ```bash
 $ pip install -e ./
 ```
@@ -32,7 +43,8 @@ dat2 = np.random.randn(1000, 10)
 networks = ddn.ddn(dat1, dat2, lambda1=0.3, lambda2=0.1)
 ```
 
-For more details and examples, check the three tutorials in the `notebooks` folder.
+For more details and examples, check the [documentation](https://ddn-30.readthedocs.io/en/latest/), which includes three tutorials and the API reference.
+The tutorials can also be found in the `docs/notebooks` folder.
 
 ## Contributing
 
