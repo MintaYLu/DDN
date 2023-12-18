@@ -2,6 +2,6 @@
 
 <!--next-version-placeholder-->
 
-## v0.1.0 (16/11/2023)
+## v3.0.0 (18/12/2023)
 
 - First release of `ddn`!
