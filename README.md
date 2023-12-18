@@ -1,17 +1,17 @@
 # DDN 3.0
-We developed an efficient and accurate differential network analysis tool – Differential Dependency Networks (DDN3.0).
-
-DDN 3.0 is capable of jointly learning sparse common and rewired network structures, which is especially useful for genomics, proteomics, and other biomedical studies.
-
-This repository provides the Python package and examples of using DDN 3.0.
+We developed an efficient and accurate differential network analysis tool – Differential Dependency Networks (DDN).
+DDN is capable of jointly learning sparse common and rewired network structures, which is especially useful for genomics, proteomics, and other biomedical studies.
+DDN 3.0 significantly improves the speed of previous verions of DDN, and is available as a Python package.
+This repository provides the source code and examples of using DDN.
 
 ## Installation
-### Option 1: install into a new Conda environment
+### Option 1: install into a new Conda environment using pip
 One way is to install DDN into a new Conda environment. To create and activate an environment named `ddn`, run this:
 ```bash
-conda create -n ddn
+conda create -n ddn python=3.11
 conda activate ddn
 ```
+Python 3.12 may have some issue with Numba.
 
 DDN 3.0 can then be installed with the followin command.
 ```bash
@@ -20,14 +20,18 @@ pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://
 DDN 3.0 is still in development, so we put it into TestPyPI.
 
 ### Option 2: install into an existing Conda environment
-If you want to install DDN into an existing Conda environment, it is suggested to to install DDN in development mode
+If you want to install DDN into an existing Conda environment, it is suggested to to install dependencies in Conda first.
 
 First we need to install some common dependencies.
 ```bash
 $ conda install -c conda-forge numpy scipy numba networkx matplotlib jupyter scipy pandas scikit-learn
 ```
 
-Clone the repository, or just download or unzip it. Then we can install DDN 3.0 in developement mode.
+Clone the repository, or just download or unzip it. Then we can install DDN 3.0.
+```bash
+$ pip install ./
+```
+Or you may want to install it in development mode.
 ```bash
 $ pip install -e ./
 ```
