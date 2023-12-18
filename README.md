@@ -57,6 +57,14 @@ networks = ddn.ddn(dat1, dat2, lambda1=0.3, lambda2=0.1)
 For more details and examples, check the [documentation](https://ddn-30.readthedocs.io/en/latest/), which includes three tutorials and the API reference.
 The tutorials can also be found in the `docs/notebooks` folder.
 
+## Tests
+
+To run tests, go to the folder of DDN3 source code, then run `pytest`.
+```bash
+pytest tests
+```
+It will compare output of DDN with reference values. It tests DDN with various acceleration strategies.
+
 ## Contributing
 
 Please report bugs in the issues. 
