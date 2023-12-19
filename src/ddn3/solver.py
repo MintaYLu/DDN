@@ -172,6 +172,36 @@ def run_corr(
     threshold,
     use_warm=False,
 ):
+    """The wrapper that calls the DDN 3.0 correlation matrix update algorithm
+
+    Parameters
+    ----------
+    corr_matrix_1 : ndarray
+        Input correlation matrix for condition 1.
+    corr_matrix_2 : ndarray
+        Input correlation matrix for condition 2.
+    node : int
+        Index of the current node that serve as the response variable.
+    lambda1 : float
+        DDN parameter lambda1.
+    lambda2 : float
+        DDN parameter lambda2.
+    beta1_in : array_like, length P
+        Initial beta for condition 1. If initialization is not needed, use an array of all zeros.
+    beta2_in : array_like, length P
+        Initial beta for condition 2. If initialization is not needed, use an array of all zeros.
+    threshold : float
+        Convergence threshold.
+    use_warm : bool, optional
+        If true, use warm start.
+
+    Returns
+    -------
+    beta1 : ndarray, length P
+        Estimated beta for `node` in condition 1.
+    beta2 : ndarray, length P
+        Estimated beta for `node` in condition 2.
+    """
     beta_in = np.concatenate((beta1_in, beta2_in))
 
     beta, r, betaerr = bcd.bcd_corr(
