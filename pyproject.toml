@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ddn3"
-version = "0.1.0"
+version = "1.0.1"
 description = "Dependency network analysis under two conditions"
 authors = ["Minta Lu", "Yizhi Wang"]
 license = "MIT"
