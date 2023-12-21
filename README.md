@@ -73,7 +73,7 @@ If you are interested in adding features or fixing bug, feel free to contact us.
 
 ## License
 
-The `ddn` package is licensed under the terms of the MIT license.
+The `ddn3` package is licensed under the terms of the MIT license.
 
 ## Citations
 
