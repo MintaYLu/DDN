@@ -211,6 +211,7 @@ def plot_network(
     fig_size,
     font_size_scale=1,
     node_size_scale=2,
+    font_alpha_min=0.4,
 ):
     """Draw the network
 
@@ -239,6 +240,8 @@ def plot_network(
         The default value is scaled according to the node number.
     node_size_scale : int, optional
         Scale of node sizes, by default 1
+    font_alpha_min : float, optional
+        The smallest alpha value for fonts in labels, between 0 and 1
     """
     # The positions are given in a [-a,a]x[-1,1] region
     # Re-scale it to figure size, but leave some margin for text (here 0.8)
@@ -267,7 +270,7 @@ def plot_network(
     # font_size_lst = font_size * (
     #     np.abs(node_size) / np.max(node_size) * (1.0 - 0.5) + 0.5
     # )
-    font_alpha_lst = np.abs(node_size) / np.max(node_size) * (1.0 - 0.1) + 0.1
+    font_alpha_lst = np.abs(node_size) / np.max(node_size) * (1.0 - font_alpha_min) + font_alpha_min
 
     # draw
     fig, ax = plt.subplots(figsize=fig_size)
