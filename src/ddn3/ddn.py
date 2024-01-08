@@ -176,6 +176,7 @@ def ddn(
     mthd="resi",
     std_est="std",
     g_rec_in=(),
+    standard=True,
 ):
     """Run DDN.
 
@@ -210,8 +211,9 @@ def ddn(
     n_node = g1_data.shape[1]
     n1 = g1_data.shape[0]
     n2 = g2_data.shape[0]
-    g1_data = tools.standardize_data(g1_data, scaler=std_est)
-    g2_data = tools.standardize_data(g2_data, scaler=std_est)
+    if standard:
+        g1_data = tools.standardize_data(g1_data, scaler=std_est)
+        g2_data = tools.standardize_data(g2_data, scaler=std_est)
 
     if len(g_rec_in) == 0:
         g_rec_in = np.zeros((2, n_node, n_node))
