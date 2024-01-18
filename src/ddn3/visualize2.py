@@ -110,7 +110,7 @@ def draw_network_for_ddn(
     )
 
     # plot the network
-    plot_network(
+    fig, ax = plot_network(
         G,
         pos,
         d_min=d_min,
@@ -126,7 +126,7 @@ def draw_network_for_ddn(
     if len(pdf_name) > 0:
         plt.savefig(f"{pdf_name}_{mode}.pdf", format="pdf", bbox_inches="tight")
 
-    return G
+    return G, fig, ax
 
 
 def create_nx_graph(
@@ -294,7 +294,7 @@ def plot_network(
 
         # when there are too many edges, make the edge thin
         # edge weight also in points, 1 inch = 72 points
-        d_min1 = min(d_min, 0.5)
+        d_min1 = min(d_min, 0.25)
         edge_weight = edge_weight / np.max(edge_weight) * d_min1 * 72 / 6
         if len(edge_weight) > 200:
             edge_weight = edge_weight / len(edge_weight) * 200
@@ -314,6 +314,7 @@ def plot_network(
 
     ax.set_xlim((-fig_size[0] / 2, fig_size[0] / 2))
     ax.set_ylim((-fig_size[1] / 2, fig_size[1] / 2))
+    return fig, ax
 
 
 def get_pos_multi_parts(

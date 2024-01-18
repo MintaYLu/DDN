@@ -11,7 +11,7 @@ One way is to install DDN into a new Conda environment. To create and activate a
 conda create -n ddn python=3.11
 conda activate ddn
 ```
-Python 3.12 may have some issue with Numba.
+Python 3.12 may have some issue with Numba in Windows.
 
 DDN 3.0 can then be installed with the followin command.
 ```bash
@@ -77,4 +77,4 @@ The `ddn3` package is licensed under the terms of the MIT license.
 
 ## Citations
 
-[1] Zhang, Bai, and Yue Wang. "Learning structural changes of Gaussian graphical models in controlled experiments." arXiv preprint arXiv:1203.3532 (2012).
+[1] DDN3.0: Determining significant rewiring of biological network structure with differential dependency networks.
