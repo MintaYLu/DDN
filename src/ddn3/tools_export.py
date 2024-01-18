@@ -3,7 +3,7 @@
 
 import numpy as np
 import pandas as pd
-from ddn import tools
+from ddn3 import tools
 
 
 def get_diff_comm_net_for_plot(omega1, omega2, gene_names):

@@ -59,7 +59,8 @@ def gen_mv(cov_mat, n_sample):
         Generated samples
     """
     x = np.random.multivariate_normal(np.zeros(len(cov_mat)), cov_mat, n_sample)
-    return standardize_data(x, scaler="std")
+    # x = standardize_data(x, scaler="std")
+    return x
 
 
 def concatenate_data(controldata, casedata, method="diag"):

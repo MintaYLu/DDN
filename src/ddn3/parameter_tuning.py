@@ -23,8 +23,8 @@ By utilizing the prior knowledge, it is more likely to obtain the network that i
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
-from ddn import ddn
-from ddn import tools
+from ddn3 import ddn
+from ddn3 import tools
 
 
 class DDNParameterSearch:

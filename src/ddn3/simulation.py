@@ -8,7 +8,7 @@ It also contains some helper functions for other simulation functions.
 """
 
 import numpy as np
-from ddn import tools
+from ddn3 import tools
 
 
 def create_pair_graph(

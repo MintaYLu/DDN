@@ -6,7 +6,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = u"ddn"
+project = u"ddn3"
 copyright = u"2023, Minta Lu and Yizhi Wang"
 author = u"Minta Lu and Yizhi Wang"
 
