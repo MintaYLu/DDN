@@ -1,11 +1,11 @@
-# We moved to https://github.com/cbil-vt/DDN3
+# We have moved to https://github.com/cbil-vt/DDN3
 
 This repository will not be updated later.
 
 # DDN 3.0
 We developed an efficient and accurate differential network analysis tool – Differential Dependency Networks (DDN).
 DDN is capable of jointly learning sparse common and rewired network structures, which is especially useful for genomics, proteomics, and other biomedical studies.
-DDN 3.0 significantly improves the speed of previous verions of DDN, and is available as a Python package.
+DDN 3.0 significantly improves the speed of previous versions of DDN, and is available as a Python package.
 This repository provides the source code and examples of using DDN.
 
 ## Installation
